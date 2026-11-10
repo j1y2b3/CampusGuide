@@ -5,9 +5,10 @@ import { SearchBar } from './components/SearchBar'
 import { CardView } from './components/CardView'
 import { DraftNote } from './components/DraftNote'
 import { TodoPanel } from './components/TodoPanel'
+import { PortalPanel } from './components/PortalPanel'
 import type { ActionCard, AskResponse } from './types'
 
-type Tab = 'ask' | 'todo'
+type Tab = 'ask' | 'portal' | 'todo'
 
 export default function App() {
   const [tab, setTab] = useState<Tab>('ask')
@@ -48,6 +49,7 @@ export default function App() {
         {(
           [
             ['ask', '问事'],
+            ['portal', '入口'],
             ['todo', `我的待办${pendingCount ? ` ${pendingCount}` : ''}`]
           ] as const
         ).map(([key, label]) => (
@@ -100,6 +102,10 @@ export default function App() {
             </section>
           )}
 
+        </main>
+      ) : tab === 'portal' ? (
+        <main className="flex-1">
+          <PortalPanel onAddTodo={handleAddTodo} />
         </main>
       ) : (
         <main className="flex-1">
