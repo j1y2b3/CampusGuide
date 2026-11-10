@@ -75,14 +75,17 @@ export const kb: KnowledgeEntry[] = [
       provider: 'hdu'
     },
     steps: [
-      '确认是否在供热时段内（以当学期通知为准）',
+      '确认是否在供热时段内（一般为 6:00–8:00、16:30–24:00，以当学期通知为准）',
       '楼层较高的寝室先放约一小会儿水，淋浴头才会出热水',
       '供热时段内仍无热水，走报修流程',
-      '紧急情况联系公寓热水报修'
+      '紧急情况联系公寓热水报修（据杭电助手知识库为 81806670，待核验）'
     ],
     materials: ['手机（公众号内的洗浴入口）'],
     sla: '供热时段与报修电话每学期可能调整',
-    source: { title: '宿舍门告示《住宿服务指南》第 4 项', note: '供热时段请以当学期通知为准' },
+    source: {
+      title: '宿舍门告示《住宿服务指南》第 4 项',
+      note: '供热时段与热水报修电话来自杭电助手知识库，尚未实地核验'
+    },
     verified: true
   },
   {
@@ -215,6 +218,29 @@ export const kb: KnowledgeEntry[] = [
     source: { title: '宿舍门告示《住宿服务指南》第 10 项', note: '借用流程未核实，以现场要求为准' },
     verified: false
   },
+  {
+    school: 'hdu',
+    id: 'life.fire-safety',
+    category: '生活 / 寝室',
+    triggers: ['着火了', '消防', '逃生', '灭火器', '消火栓', '安全通道', '火灾'],
+    title: '消防疏散与应急',
+    summary: '每栋楼都张贴消防疏散指示图，先认清本楼层最近的安全通道方向。',
+    entry: {
+      channel: '本楼消防疏散指示图（楼道 / 电梯口张贴）',
+      access: 'none',
+      provider: 'hdu',
+      note: '各楼疏散图不同，必须看自己所在楼栋的那一张'
+    },
+    steps: [
+      '入住后先看一次本楼疏散图，记住最近的两条安全通道',
+      '确认本层消火栓与灭火器的位置',
+      '发生火情先撤离再报警，不要返回取物',
+      '火警 119，急救 120；校内可同时联系值班室与保卫部'
+    ],
+    materials: [],
+    source: { title: '宿舍门告示《15 号楼消防疏散指示图》', note: '各楼图示不同，以本楼张贴为准' },
+    verified: true
+  },
 
   // ── 体育 ─────────────────────────────────────────────────────
   {
@@ -236,10 +262,12 @@ export const kb: KnowledgeEntry[] = [
       '之后用「杭电体联」公众号的小程序登录',
       '到任一场地刷脸开始（一次只能选一个场地，换场地需重新刷脸）',
       '跑步过程手机保持亮屏、小程序在前台',
-      '结束时务必在终点终端刷脸，否则该次不计'
+      '结束时务必在终点终端刷脸，否则该次不计',
+      '数据没算上的：2 天内到「运动时间bank」小程序 → 我的 → 聊天机器人 → 跑步记录提交反馈',
+      '受伤等原因不能跑：在截止前走 智慧杭电 → 校务服务网 提交短期免跑申请'
     ],
     materials: ['学号', '手机', '校园卡'],
-    sla: '数据异常需在 2 天内反馈，否则不予处理',
+    sla: '数据异常需在 2 天内反馈，否则不予处理；免跑申请需在学期截止前完成',
     source: {
       title: '《2026-2027年第一学期校园阳光乐跑说明》',
       note: '距离、时段、评分每学期调整，以当学期通知为准'
@@ -400,6 +428,85 @@ export const kb: KnowledgeEntry[] = [
   },
   {
     school: 'hdu',
+    id: 'academic.assignment',
+    category: '教务 / 作业',
+    triggers: ['作业', '交作业', '作业在哪交', 'ddl', '截止', '没交', '学习通'],
+    title: '课程作业在哪查、在哪交',
+    summary: '作业不在教务系统发布，各门课渠道不同，多数在学习通。',
+    entry: {
+      channel: '学习通（多数课程）/ 雨课堂 / 课程群',
+      url: 'https://i.mooc.chaoxing.com',
+      access: 'login',
+      provider: 'vendor',
+      note: '各课程渠道不统一，没有全校统一入口'
+    },
+    steps: [
+      '先确认这门课的作业发在哪个渠道：多数在学习通，部分用雨课堂或课程群',
+      '记下截止时间与格式要求（文件名、格式、份数）',
+      '提前一天上传，避开截止前的拥堵',
+      '提交后回看状态是否为「已提交」，必要时截图留证',
+      '逾期一般无法补交，只能找任课教师说明'
+    ],
+    materials: ['作业文件（建议以学号姓名命名）'],
+    sla: '以任课教师公布的截止时间为准',
+    source: {
+      title: '各课程教学大纲与任课教师通知',
+      note: '渠道最碎片的一环，这是学生最容易漏交的地方'
+    },
+    verified: false
+  },
+  {
+    school: 'hdu',
+    id: 'academic.transcript',
+    category: '教务 / 证明',
+    triggers: ['成绩单', '在读证明', '证明', '盖章', '中英文成绩单', '出国材料'],
+    title: '成绩单与在读证明开具',
+    summary: '出国、实习、评奖常需成绩单与在读证明，注意是否需要盖章及英文版。',
+    entry: {
+      channel: '教务处（学籍管理 / 综合管理栏目）',
+      url: 'https://jwc.hdu.edu.cn/xjgl/list.htm',
+      access: 'none',
+      provider: 'hdu',
+      note: '办事说明可公开查看；盖章件需到教务处窗口'
+    },
+    steps: [
+      '先问接收方要求：是否需要盖章、是否需要英文版、是否需要密封件',
+      '在教务处网站对应栏目查看办事说明与所需材料',
+      '自助终端或教务系统申请打印（具体入口以教务处说明为准）',
+      '需要盖章的到教务处窗口办理，注意办公时间'
+    ],
+    materials: ['校园卡 / 学号', '接收方要求说明'],
+    sla: '办理时限与收费以教务处说明为准',
+    source: { title: '教务处官网 · 学籍管理 / 综合管理', url: 'https://jwc.hdu.edu.cn', note: '流程与收费未核实' },
+    verified: false
+  },
+  {
+    school: 'hdu',
+    id: 'academic.makeup-exam',
+    category: '教务 / 考试',
+    triggers: ['缓考', '补考', '重修', '挂科', '缺考', '考试时间', '考场'],
+    title: '缓考 / 补考 / 重修',
+    summary: '因病因事不能考试要在考前申请缓考；未通过课程按通知参加补考或重修。',
+    entry: {
+      channel: '教务处 · 考试管理栏目',
+      url: 'https://jwc.hdu.edu.cn/ksgl/list.htm',
+      access: 'none',
+      provider: 'hdu',
+      note: '报名与考试安排以教务处当学期通知为准'
+    },
+    steps: [
+      '先分清是缓考、补考还是重修，三者流程不同',
+      '缓考必须在考试前提交申请并附证明（如病历），逾期一般不受理',
+      '补考 / 重修关注教务处「考试管理」栏目的报名与考试安排',
+      '留意是否影响学分与绩点，必要时咨询辅导员或教务办'
+    ],
+    materials: ['申请表', '证明材料（病历等）', '学号信息'],
+    sla: '缓考须在考试前申请',
+    source: { title: '教务处官网 · 考试管理', url: 'https://jwc.hdu.edu.cn/ksgl/list.htm', note: '申请时限与表格位置未核实' },
+    verified: false
+  },
+  {
+    school: 'hdu',
     id: 'academic.psych',
     category: '教务 / 心理',
     triggers: ['心理咨询', '心理', '压力大', '咨询预约', '情绪'],
@@ -549,7 +656,78 @@ export const kb: KnowledgeEntry[] = [
       '仍不通再提交网络报修，写清楼栋与房间号'
     ],
     materials: ['学号', '设备信息'],
-    source: { title: '校务服务网服务清单 + 信息技术中心' },
+    source: { title: '校务服务网服务清单 + 信息技术中心', note: '办理流程与套餐未核实' },
+    verified: false
+  },
+  {
+    school: 'hdu',
+    id: 'campus.hospital',
+    category: '校医院',
+    triggers: ['看病', '校医院', '门诊', '医保', '开药', '生病', '发烧'],
+    title: '校医院就医',
+    summary: '小病去校医院挂号就诊；医保报销与转诊规则以医院说明为准。',
+    entry: {
+      channel: '校医院（现场挂号）',
+      url: 'https://xyy.hdu.edu.cn/',
+      access: 'none',
+      provider: 'hdu',
+      note: '网站可查科室与通知，就诊需现场'
+    },
+    steps: [
+      '带校园卡/医保卡到校医院挂号',
+      '按科室就诊，需要转诊的向医生说明',
+      '保留票据，按医保规则报销',
+      '情况紧急直接拨打 120，同时联系辅导员'
+    ],
+    materials: ['校园卡 / 医保卡', '既往病历（如有）'],
+    source: { title: '校医院官网', url: 'https://xyy.hdu.edu.cn', note: '门诊时间与报销流程未核实' },
+    verified: false
+  },
+  {
+    school: 'hdu',
+    id: 'campus.security',
+    category: '安全保卫',
+    triggers: ['身份证丢了', '户籍', '报案', '保卫处', '校园110', '证件补办'],
+    title: '安全保卫（证件 / 户籍 / 报案）',
+    summary: '户籍、证件与报案类事务到安全保卫部办理。',
+    entry: {
+      channel: '安全保卫部',
+      url: 'https://baowei.hdu.edu.cn/',
+      access: 'none',
+      provider: 'hdu',
+      note: '网站可查办事说明与联系方式'
+    },
+    steps: [
+      '先在保卫部网站看对应业务的办理说明',
+      '带学生证/身份证到保卫部窗口办理',
+      '紧急情况直接拨打校园 110（可在杭电钉内使用）',
+      '东西丢了可以先看「失物招领」平台'
+    ],
+    materials: ['学生证 / 身份证'],
+    source: { title: '安全保卫部官网', url: 'https://baowei.hdu.edu.cn', note: '窗口位置与办公时间未核实' },
+    verified: false
+  },
+  {
+    school: 'hdu',
+    id: 'campus.parcel',
+    category: '快递',
+    triggers: ['快递', '取件', '驿站', '包裹', '寄快递', '取快递'],
+    title: '快递收寄与取件',
+    summary: '校内快递集中在驿站，凭取件码领取；寄件需要实名。',
+    entry: {
+      channel: '校内快递驿站（按短信 / APP 通知的站点）',
+      access: 'none',
+      provider: 'vendor',
+      note: '各驿站位置与营业时间不同'
+    },
+    steps: [
+      '收到取件通知后确认站点位置与营业时间',
+      '到站凭取件码或扫码取件，核对姓名手机号',
+      '大件或超时包裹留意保管期限，逾期可能被退回',
+      '寄件需携带身份证实名登记'
+    ],
+    materials: ['取件码', '手机', '寄件需身份证'],
+    source: { title: '驿站现场公告', note: '驿站位置与营业时间未核实' },
     verified: false
   }
 ]
