@@ -67,6 +67,7 @@ export function localAnswer(query: string): AskResponse {
   const cards: ActionCard[] = hits.map((h) =>
     toActionCard(
       h.entry,
+      query,
       h.hitTrigger ? `你提到了"${h.hitTrigger}"` : '与你描述的事项相关'
     )
   )
@@ -84,9 +85,9 @@ export function localAnswer(query: string): AskResponse {
 /** 供"更多常办事项"使用的兜底列表 */
 export const fallbackIds = [
   'life.dorm.electricity',
-  'academic.assignment.deadline',
-  'library.borrow',
-  'campus.card'
+  'sport.sunrun',
+  'library.opac',
+  'social.second-class'
 ]
 
 export function fallbackCards(): ActionCard[] {

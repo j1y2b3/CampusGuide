@@ -38,7 +38,9 @@ function getConfig() {
 function fallbackReply(query: string, entries: KnowledgeEntry[]): AskResponse {
   const hits = searchLocal(query, entries)
   if (hits.length > 0) {
-    const cards = hits.map((h) => toActionCard(h.entry, h.hitTrigger ? `你提到了"${h.hitTrigger}"` : '相关事项'))
+    const cards = hits.map((h) =>
+      toActionCard(h.entry, query, h.hitTrigger ? `你提到了"${h.hitTrigger}"` : '相关事项')
+    )
     return { mode: 'local', cards, reply: `找到 ${cards.length} 条相关事项，按相关度排序：` }
   }
   return {
@@ -115,7 +117,7 @@ async function callLlm(query: string, entries: KnowledgeEntry[]): Promise<AskRes
   for (const pick of parsed.picks) {
     const entry = byId.get(pick.id)
     if (entry && !cards.some((c) => c.id === entry.id)) {
-      cards.push(toActionCard(entry, pick.reason))
+      cards.push(toActionCard(entry, query, pick.reason))
     }
     if (cards.length >= MAX_CARDS) break
   }

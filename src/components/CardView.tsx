@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { ACCESS_LABEL, PROVIDER_LABEL } from '../data/knowledge'
 import type { ActionCard } from '../types'
 
 interface Props {
@@ -113,22 +114,60 @@ export function CardView({ card, onAddTodo, defaultOpen = false }: Props) {
 
           <section className="space-y-1.5 text-[13px]">
             {card.entry.channel && (
-              <p className="text-slate-700">
+              <div className="text-slate-700">
                 <span className="text-slate-400">入口：</span>
-                {card.entry.url ? (
+                <span>{card.entry.channel}</span>
+                {card.entry.url && card.entry.access === 'none' && (
                   <a
                     href={card.entry.url}
                     target="_blank"
                     rel="noreferrer noopener"
-                    className="text-teal-700 underline decoration-dotted underline-offset-2"
+                    className="ml-1 text-teal-700 underline decoration-dotted underline-offset-2"
                   >
-                    {card.entry.channel}
+                    直接打开
                   </a>
-                ) : (
-                  card.entry.channel
                 )}
-              </p>
+              </div>
             )}
+
+            {/* 打开方式是本产品的核心信息：学生真正卡住的地方在这 */}
+            {card.entry.access && card.entry.access !== 'none' && (
+              <div className="flex flex-wrap items-center gap-1.5">
+                <span
+                  className={`rounded-md px-1.5 py-0.5 text-[11px] ${
+                    card.entry.access === 'dingtalk' || card.entry.access === 'wechat'
+                      ? 'bg-amber-50 text-amber-700'
+                      : 'bg-slate-100 text-slate-600'
+                  }`}
+                >
+                  {ACCESS_LABEL[card.entry.access]}
+                </span>
+                {card.entry.provider && (
+                  <span className="rounded-md bg-slate-100 px-1.5 py-0.5 text-[11px] text-slate-500">
+                    {PROVIDER_LABEL[card.entry.provider]}
+                  </span>
+                )}
+              </div>
+            )}
+
+            {card.entry.note && (
+              <p className="text-[12px] leading-relaxed text-slate-500">{card.entry.note}</p>
+            )}
+
+            {card.entry.url &&
+              card.entry.access !== 'none' &&
+              card.entry.access !== 'dingtalk' &&
+              card.entry.access !== 'wechat' && (
+                <a
+                  href={card.entry.url}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="inline-block text-[12px] text-teal-700 underline decoration-dotted underline-offset-2"
+                >
+                  复制到对应 App 打开
+                </a>
+              )}
+
             {card.sla && (
               <p className="text-slate-700">
                 <span className="text-slate-400">时限：</span>

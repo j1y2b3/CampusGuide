@@ -7,6 +7,17 @@ export interface CardSource {
   note?: string
 }
 
+/** 入口的打开条件——这是本项目最核心的差异化信息 */
+export type EntryAccess =
+  | 'none' // 浏览器可直接打开
+  | 'login' // 需统一身份认证登录
+  | 'dingtalk' // 只能在杭电钉（钉钉）内打开
+  | 'wechat' // 只能在微信内打开
+  | 'alipay' // 为支付宝容器设计，浏览器体验差
+  | 'mobile' // 需手机端打开
+
+export type EntryProvider = 'hdu' | 'hduhelp' | 'vendor'
+
 export interface KnowledgeEntry {
   school: string
   id: string
@@ -18,6 +29,10 @@ export interface KnowledgeEntry {
   entry: {
     channel: string
     url?: string
+    access?: EntryAccess
+    provider?: EntryProvider
+    /** 例如"部分模块显示开发中" */
+    note?: string
   }
   steps: string[]
   materials: string[]
@@ -26,6 +41,8 @@ export interface KnowledgeEntry {
   source: CardSource
   /** false 表示条目尚未与官方核对 */
   verified: boolean
+  /** 带 {q} 占位符的检索链接，用户提到具体对象时可自动填入 */
+  urlTemplate?: string
 }
 
 /** 返回给前端的结构化结果，前端只负责渲染 */
