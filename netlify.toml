@@ -5,6 +5,10 @@
 
 [build.environment]
   NODE_VERSION = "22"
+  # LLM_BASE_URL 是接口地址、不是密钥，但它的值会出现在 .env.example 里，
+  # 触发 Netlify 的密钥扫描导致构建失败，这里明确跳过。
+  SECRETS_SCAN_OMIT_KEYS = "LLM_BASE_URL"
+  SECRETS_SCAN_OMIT_PATHS = ".env.example"
 
 # 前端固定请求 /api/ask，这里转发到函数，避免前后端各写一套路径
 [[redirects]]
