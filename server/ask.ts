@@ -1,5 +1,5 @@
 import { kb, kbIndexForPrompt, toActionCard } from '../src/data/knowledge.js'
-import { fallbackCards, searchLocal } from '../src/lib/match.js'
+import { searchLocal } from '../src/lib/match.js'
 import type { ActionCard, AskResponse, KnowledgeEntry } from '../src/types.js'
 
 const MAX_QUERY_LENGTH = 200
@@ -43,10 +43,11 @@ function fallbackReply(query: string, entries: KnowledgeEntry[]): AskResponse {
     )
     return { mode: 'local', cards, reply: `找到 ${cards.length} 条相关事项，按相关度排序：` }
   }
+  // 查不到就如实说查不到，不再塞无关的兜底卡片（入口页已经有常办清单）
   return {
     mode: 'local',
-    cards: fallbackCards(),
-    reply: '这个需求暂时没有收录。下面是几条常办事项，或者你也可以换个说法再问一次。'
+    cards: [],
+    reply: '这个需求暂时没有收录。知识库只收校方公开可查的办事路径，没把握的不会编造。可以换个说法再问一次。'
   }
 }
 
@@ -116,17 +117,16 @@ async function callLlm(query: string, entries: KnowledgeEntry[]): Promise<AskRes
   const cards: ActionCard[] = []
   for (const pick of parsed.picks) {
     const entry = byId.get(pick.id)
-    if (entry && !cards.some((c) => c.id === entry.id)) {
-      cards.push(toActionCard(entry, query, pick.reason))
-    }
+    if (!entry || cards.some((c) => c.id === entry.id)) continue
+    cards.push(toActionCard(entry, query, pick.reason))
     if (cards.length >= MAX_CARDS) break
   }
 
   if (cards.length === 0) {
     return {
       mode: 'llm',
-      cards: fallbackCards(),
-      reply: parsed.reply?.trim() || '这个需求暂时没有收录，下面是几条常办事项。'
+      cards: [],
+      reply: parsed.reply?.trim() || '这个需求暂时没有收录，换个说法可以再试一次。'
     }
   }
 

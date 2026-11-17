@@ -81,18 +81,3 @@ export function localAnswer(query: string): AskResponse {
         : `找到 ${cards.length} 条相关事项，按相关度排序：`
   }
 }
-
-/** 供"更多常办事项"使用的兜底列表 */
-export const fallbackIds = [
-  'life.dorm.electricity',
-  'sport.sunrun',
-  'library.opac',
-  'social.second-class'
-]
-
-export function fallbackCards(): ActionCard[] {
-  return fallbackIds
-    .map((id) => kb.find((e) => e.id === id))
-    .filter((e): e is KnowledgeEntry => Boolean(e))
-    .map((e) => toActionCard(e))
-}

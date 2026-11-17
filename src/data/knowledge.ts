@@ -547,7 +547,20 @@ export const kb: KnowledgeEntry[] = [
     school: 'hdu',
     id: 'library.opac',
     category: '图书馆',
-    triggers: ['借书', '有没有这本书', '馆藏', '索书号', '查书', '在架', '可以借几本'],
+    triggers: [
+      '借书',
+      '有没有这本书',
+      '馆藏',
+      '索书号',
+      '查书',
+      '在架',
+      '可以借几本',
+      '图书馆',
+      '能借',
+      '借阅',
+      '续借',
+      '还书'
+    ],
     title: '查某本书在不在馆',
     summary: '书目检索系统不用登录就能查，能看到馆藏复本与可借数量。',
     entry: {
@@ -663,7 +676,7 @@ export const kb: KnowledgeEntry[] = [
     school: 'hdu',
     id: 'campus.hospital',
     category: '校医院',
-    triggers: ['看病', '校医院', '门诊', '医保', '开药', '生病', '发烧'],
+    triggers: ['看病', '校医院', '门诊', '医保', '开药', '生病', '发烧', '感冒', '头疼', '医务室'],
     title: '校医院就医',
     summary: '小病去校医院挂号就诊；医保报销与转诊规则以医院说明为准。',
     entry: {
