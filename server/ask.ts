@@ -1,6 +1,6 @@
-import { kb, kbIndexForPrompt, toActionCard } from '../src/data/knowledge'
-import { fallbackCards, searchLocal } from '../src/lib/match'
-import type { ActionCard, AskResponse, KnowledgeEntry } from '../src/types'
+import { kb, kbIndexForPrompt, toActionCard } from '../src/data/knowledge.js'
+import { fallbackCards, searchLocal } from '../src/lib/match.js'
+import type { ActionCard, AskResponse, KnowledgeEntry } from '../src/types.js'
 
 const MAX_QUERY_LENGTH = 200
 const MAX_CARDS = 3

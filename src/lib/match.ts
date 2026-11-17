@@ -1,5 +1,5 @@
-import { kb, toActionCard } from '../data/knowledge'
-import type { ActionCard, AskResponse, KnowledgeEntry } from '../types'
+import { kb, toActionCard } from '../data/knowledge.js'
+import type { ActionCard, AskResponse, KnowledgeEntry } from '../types.js'
 
 /** 汉字按二元组切分，用于粗粒度语义重叠计算 */
 function bigrams(text: string): string[] {

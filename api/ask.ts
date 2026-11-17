@@ -1,4 +1,4 @@
-import { handleAsk } from '../server/ask'
+import { handleAsk } from '../server/ask.js'
 
 /**
  * Vercel Function 入口。
